@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<title>SGE — Autorização Shopee</title>
+<style>
+  body { font-family: system-ui, sans-serif; background: #1b1f27; color: #eee; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+  .caixa { max-width: 420px; text-align: center; padding: 24px; }
+  a.botao { display: inline-block; margin-top: 16px; padding: 10px 18px; background: #2c5c8a; color: #fff; text-decoration: none; border-radius: 6px; }
+  code { background: #00000040; padding: 2px 6px; border-radius: 4px; }
+</style>
+</head>
+<body>
+  <div class="caixa">
+    <h2 id="titulo">Processando autorização…</h2>
+    <p id="mensagem">Redirecionando de volta para o SGE, aguarde…</p>
+    <a id="link" class="botao" style="display:none">Continuar manualmente</a>
+  </div>
+  <script>
+    var params = new URLSearchParams(window.location.search);
+    var code = params.get('code');
+    var shopId = params.get('shop_id');
+    var titulo = document.getElementById('titulo');
+    var mensagem = document.getElementById('mensagem');
+    var link = document.getElementById('link');
+
+    if (code && shopId) {
+      var destino = 'http://localhost:14320/?code=' + encodeURIComponent(code) + '&shop_id=' + encodeURIComponent(shopId);
+      link.href = destino;
+      link.textContent = 'Continuar manualmente';
+      link.style.display = 'inline-block';
+      window.location.replace(destino);
+    } else {
+      titulo.textContent = 'Não recebi os dados de autorização';
+      mensagem.textContent = 'Parâmetros "code"/"shop_id" não vieram na URL. Volte ao SGE e tente novamente.';
+    }
+  </script>
+</body>
+</html>
